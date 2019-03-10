@@ -1,0 +1,104 @@
+% Duas colunas
+%\documentclass[journal,a4paper,11pt]{IEEEtran}
+
+% Uma coluna
+\documentclass[journal,11pt,twocolumn]{IEEEtran}
+\usepackage[dvips]{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+%\usepackage[mathfrak]{mathpi}
+\usepackage{threeparttable}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage[normal]{subfigure}
+\usepackage{array,colortbl,multicol}
+\usepackage{morefloats}
+\usepackage{float}
+\usepackage{mathrsfs}
+\usepackage{comment}
+\usepackage{color}
+%\usepackage{flushend}
+%\usepackage{rangecite}
+\usepackage[sort]{cite}
+\usepackage[none]{hyphenat}
+\usepackage{psfrag}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{datetime}
+\usepackage[latin1]{inputenc}
+\usepackage[center,small]{caption}
+
+
+\sloppy
+%\renewcommand{\baselinestretch}{1.5}
+%\renewcommand{\hdashlinewidth}{2pt}
+\newcommand{\goodgap}{%
+\hspace{\subfigtopskip}%
+\hspace{\subfigbottomskip}}
+%\newtheorem{struct_type}{struct_title}[in_counter]
+\newcounter{mytempeqncnt}
+
+%\usepackage[left=1.50cm, right=1.50cm, top=2.50cm, bottom=1.50cm]{geometry}
+
+\begin{document}
+
+% paper title
+\title{Título do Trabalho}
+
+
+\author{Vicente A. de Sousa~Jr.,
+        Fuad Mousse Abinader Jr.,\thanks{Este trabalho foi realizado no Grupo de Pesquisa em Prototipagem Rápida de Soluções para Comunicação (GppCom-UFRN).}}
+
+% The paper headers
+\markboth{Nome do Evento}{Nome do Evento}
+
+% make the title area
+\maketitle
+
+\begin{abstract}
+
+Nos últimos anos, temos que usar templates para unificar a linguagem técnica~\cite{BOOK_LAW2000}.
+
+\end{abstract}
+
+\begin{keywords}
+Rádio Cognitivo, Compartilhamento de Espectro, RRM.
+\end{keywords}
+
+%\IEEEpeerreviewmaketitle
+
+\section{Introdução}
+
+Nos últimos anos,...
+
+\subsection{Proposta do Trabalho}
+
+Nos últimos anos,...
+
+\subsection{Metodologia}
+
+Nos últimos anos,...
+
+\subsubsection{Análise numérica}
+
+Nos últimos anos,...
+
+\subsubsection{Simulação}
+
+Nos últimos anos,...
+
+\subsubsection{Rede Real}
+
+Nos últimos anos,...
+
+\section{Conclusões}
+\label{sec_concl}
+
+Nos últimos anos,...
+
+\section*{Agradecimentos}
+We would like to thank Prof. Luiz Gonzaga for participating in several useful discussions that helped to improve this work.
+
+\bibliographystyle{IEEEtran}
+\bibliography{gppcom_books,gppcom_standards,gppcom_papers}
+
+\end{document}
