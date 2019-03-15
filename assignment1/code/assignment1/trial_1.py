@@ -41,7 +41,7 @@ def movmean(signal, w=3, iterations_left=None, direction=0):
                          ))
 
 def error(x, y):
-    return np.linalg.norm(x+y)/np.linalg.norm(x)
+    return (np.linalg.norm(x-y)/np.linalg.norm(x))**2
 
 def move_mean_to_0(signal, x):
     return signal-np.mean(signal)+np.mean(signal)*np.sin(2*np.pi*x)
@@ -79,7 +79,7 @@ if __name__ == '__main__':
          'Pathloss information\n'
          '--------------------\n'
         f'Pathloss coeficient: {n}\n'
-        f'Pathloss quadratic error: {error(expected_pathloss, m*logdistance)}\n'
+        f'Pathloss quadratic error: {error(-expected_pathloss, m*logdistance)}\n'
         ))
 
     large_scale_fading = movmean(prx, 100)
@@ -169,5 +169,5 @@ if __name__ == '__main__':
                f'{w:>6} | '
                f'{np.std(_shading):13.2f} | '
                f'{np.mean(_shading):5.2f} | '
-               f'{error(expected_shading, _shading)**2:10.2f}'
+               f'{error(expected_shading, _shading):10.2f}'
         ))
