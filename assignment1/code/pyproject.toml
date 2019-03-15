@@ -6,6 +6,8 @@ authors = ["Vinícius Dantas <viniciusdantas@bct.ect.ufrn.br>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
+scipy = "^1.2"
+matplotlib = "^3.0"
 
 [tool.poetry.dev-dependencies]
 
