@@ -89,72 +89,64 @@ if __name__ == '__main__':
 
     plt.figure()
     plt.title('Potência recebida e perdas do sinal original')
-    plt.plot(distance, prx, 'orange')
-    plt.plot(distance, -expected_pathloss+expected_shading, 'cyan')
-    plt.plot(distance, -expected_pathloss, 'r--')
+    plt.plot(distance, prx, 'orange',
+            label='Potência recebida completa')
+    plt.plot(distance, -expected_pathloss+expected_shading, 'cyan',
+            label='Desvanecimento em larga escala')
+    plt.plot(distance, -expected_pathloss, 'r--',
+             label='Perda de percurso')
 
     plt.xlabel('Distance (m)')
     plt.ylabel('Potência (dB)')
     plt.xlim(min(distance), max(distance))
-
-    plt.legend([
-        'Potência recebida completa',
-        'Desvanecimento em larga escala',
-        'Perda de percurso',
-       ])
+    plt.legend()
 
     plt.savefig('trial1_original.eps')
 
 
     plt.figure()
     plt.title('Potência recebida e perdas do sinal estimado')
-    plt.plot(distance, prx, 'orange')
-    plt.plot(distance, large_scale_fading, 'cyan')
-    plt.plot(distance, -pathloss, 'r--')
+    plt.plot(distance, prx, 'orange',
+             label='Potência recebida completa')
+    plt.plot(distance, large_scale_fading, 'cyan',
+             label='Desvanecimento em larga escala')
+    plt.plot(distance, -pathloss, 'r--',
+             label='Perda de percurso')
   
     plt.xlabel('Distance (m)')
     plt.ylabel('Potência (dB)')
     plt.xlim(min(distance), max(distance))
-
-    plt.legend([
-        'Potência recebida completa',
-        'Desvanecimento em larga escala',
-        'Perda de percurso',
-       ])
+    plt.legend()
 
     plt.savefig('trial1_estimated.eps')
 
 
     plt.figure()
     plt.title('Perda de percurso original e estimada')
-    plt.plot(distance, expected_pathloss, 'cyan')
-    plt.plot(distance, pathloss, 'r--')
+    plt.plot(distance, expected_pathloss, 'cyan',
+             label='Perda de percurso original')
+    plt.plot(distance, pathloss, 'r--',
+             label='Perda de percurso estimada')
   
     plt.xlabel('Distance (m)')
     plt.ylabel('Potência (dB)')
     plt.xlim(min(distance), max(distance))
-
-    plt.legend([
-        'Perda de percurso original',
-        'Perda de percurso estimada',
-       ])
+    plt.legend()
 
     plt.savefig('trial1_pathloss.eps')
 
 
     plt.figure()
     plt.title('Sombreamento original e estimado')
-    plt.plot(distance, expected_shading, 'cyan')
-    plt.plot(distance, shading, 'r--')
+    plt.plot(distance, expected_shading, 'cyan',
+             label='Sombreamento original')
+    plt.plot(distance, shading, 'r--',
+             label='Sombreamento estimado')
  
     plt.xlabel('Distance (m)')
     plt.ylabel('Potência (dB)')
     plt.xlim(min(distance), max(distance))
-
-    plt.legend([
-        'Sombreamento original',
-        'Sombreamento estimado',
-       ])
+    plt.legend()
 
     plt.savefig('trial1_shading.eps')
 
@@ -164,7 +156,6 @@ if __name__ == '__main__':
     for w in (10, 50, 100, 150, 200):
         _large_scale_fading = movmean(prx, w)
         _shading = _large_scale_fading+pathloss
-
         print((
                f'{w:>6} | '
                f'{np.std(_shading):13.2f} | '
