@@ -5,7 +5,7 @@ import numpy as np
 from scipy import stats
 from scipy.io import loadmat
 
-# from stats import distribution_fit
+from stats import distribution_fit
 
 def _load_signal(name):
     try:
@@ -47,38 +47,6 @@ def error(x, y):
 
 def move_mean_to_0(signal, x):
     return signal-np.mean(signal)+np.mean(signal)*np.sin(2*np.pi*x)
-
-import re
-from collections import namedtuple
-import itertools
-DistributionFit = namedtuple('DistributionFit', ['name', 'args', 'fit'])
-def distribution_fit(data):
-    distributions = ('alpha', 'anglit', 'arcsine', 'argus', 'beta', 'betaprime', 'bradford', 'burr', 'burr12', 'cauchy', 'chi', 'chi2', 'cosine', 'crystalball', 'dgamma', 'dweibull', 'erlang', 'expon', 'exponnorm', 'exponweib', 'exponpow', 'f', 'fatiguelife', 'fisk', 'foldcauchy', 'foldnorm', 'frechet_r', 'frechet_l', 'genlogistic', 'gennorm', 'genpareto', 'genexpon', 'genextreme', 'gausshyper', 'gamma', 'gengamma', 'genhalflogistic', 'gilbrat', 'gompertz', 'gumbel_r', 'gumbel_l', 'halfcauchy', 'halflogistic', 'halfnorm', 'halfgennorm', 'hypsecant', 'invgamma', 'invgauss', 'invweibull', 'johnsonsb', 'johnsonsu', 'kappa4', 'kappa3', 'ksone', 'kstwobign', 'laplace', 'levy', 'levy_l', 'levy_stable', 'logistic', 'loggamma', 'loglaplace', 'lognorm', 'lomax', 'maxwell', 'mielke', 'moyal', 'nakagami', 'ncx2', 'ncf', 'nct', 'norm', 'norminvgauss', 'pareto', 'pearson3', 'powerlaw', 'powerlognorm', 'powernorm', 'rdist', 'reciprocal', 'rayleigh', 'rice', 'recipinvgauss', 'semicircular', 'skewnorm', 't', 'trapz', 'triang', 'truncexpon', 'truncnorm', 'tukeylambda', 'uniform', 'vonmises', 'vonmises_line', 'wald', 'weibull_min', 'weibull_max', 'wrapcauchy')
-    results = []
-    count = 0
-    for name in distributions:
-        fit = args = ()
-        try:
-            fit = stats.kstest(shading, name)
-        except TypeError as e:
-            missing_arguments = int(re.search('\d+', str(e)).group(0))
-            if 1 <= missing_arguments <= 2:
-                available_args = (range(1,11),)*missing_arguments
-
-                best_fit = ()
-                for arg in itertools.product(*available_args):
-                    fit = stats.kstest(shading, name, args=arg)
-                    if not best_fit or fit < best_fit:
-                        best_fit = fit
-                        args = (arg,)
-                fit = best_fit
-            else:
-                count +=1
-                continue
-        if fit:
-            results.append(DistributionFit(name, args, fit))
-    print("{} failed distribution fit", count)
-    return tuple(sorted(results, key=lambda dist: dist.fit))
 
 
 if __name__ == '__main__':
@@ -185,12 +153,31 @@ if __name__ == '__main__':
 
     plt.savefig('trial1_shading.eps')
 
+    # distributions = ('anglit', 'arcsine', 'cauchy', 'cosine', 'expon', 'gilbrat', 'gumbel_r', 'gumbel_l', 'halfcauchy', 'halflogistic', 'halfnorm', 'hypsecant', 'kstwobign', 'laplace', 'levy', 'levy_l', 'logistic', 'maxwell', 'moyal', 'norm', 'rayleigh', 'semicircular', 'uniform', 'wald')
+    #min(distributions, key=lambda name: stats.kstest(_shading, name))
+    # cauchy vs anglit
+    # _distributions = sorted(distributions, key=lambda name: stats.kstest(shading, name))
+    """plt.figure()
+    x = np.linspace(-30,30,1000)
+    param = stats.dgamma.fit(shading, 5)
+    pdf_fitted = stats.dgamma.pdf(x, param[0], loc=param[1], scale=param[2])
+    plt.hist(shading, normed=True, label='Histograma do sombreamento')
+    plt.plot(x,pdf_fitted,'r-', label='Fit da distribuição gamma')
+    param = stats.cauchy.fit(shading)
+    pdf_fitted = stats.cauchy.pdf(x, loc=param[0], scale=param[1])
+    plt.plot(x,pdf_fitted,'b-', label='Fit da distribuição de Cauchy')
+    plt.legend()
+    plt.show()"""
     print(
             'Janela | Desvio padrão | Média | Erro Médio'
         )
     for w in (10, 50, 100, 150, 200):
         _large_scale_fading = movmean(prx, w)
         _shading = _large_scale_fading+pathloss
+        #_distributions = sorted(distributions, key=lambda name: stats.kstest(_shading, name))
+        _distributions = distribution_fit(_shading)
+        print(_distributions[:2])
+
         print((
                f'{w:>6} | '
                f'{np.std(_shading):13.2f} | '
