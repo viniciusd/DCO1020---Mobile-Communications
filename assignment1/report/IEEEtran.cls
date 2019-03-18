@@ -2019,7 +2019,7 @@
 \def\ext@figure{lof}
 \def\fnum@figure{Fig.~\thefigure}
 \def\figure{\@float{figure}}
-\let\endfigure\end@float
+\def\endfigure{\end@float}
 \@namedef{figure*}{\@dblfloat{figure}}
 \@namedef{endfigure*}{\end@dblfloat}
 \newcounter{table}
@@ -2031,7 +2031,7 @@
 % V1.6 IEEE uses 8pt text for tables
 % to default to footnotesize, we hack into LaTeX2e's \@floatboxreset and pray
 \def\table{\def\@floatboxreset{\reset@font\footnotesize\@setminipage}\@float{table}}
-\let\endtable\end@float
+\def\endtable{\end@float}
 % v1.6b double column tables need to default to footnotesize as well.
 \@namedef{table*}{\def\@floatboxreset{\reset@font\footnotesize\@setminipage}\@dblfloat{table}}
 \@namedef{endtable*}{\end@dblfloat}

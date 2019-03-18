@@ -1,0 +1,112 @@
+\documentclass[journal,11pt,twocolumn]{IEEEtran}
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{makecell}
+\usepackage[normal]{subfigure}
+\usepackage{array,colortbl}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage[sort]{cite}
+\usepackage[none]{hyphenat}
+\usepackage{minted}
+
+% Those packages were originally here, but I don't think we are gonna need them, so I commented them out
+%\usepackage[center,small]{caption}
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{comment}
+%\usepackage{float}
+%\usepackage{flushend}
+%\usepackage[mathfrak]{mathpi}
+%\usepackage{morefloats}
+%\usepackage{multicol}
+%\usepackage{multirow}
+%\usepackage{psfrag}
+%\usepackage{rangecite}
+%\usepackage{tabularx}
+%\usepackage{threeparttable}
+
+\setminted{breaklines=true}
+
+\sloppy
+\newcommand{\goodgap}{%
+\hspace{\subfigtopskip}%
+\hspace{\subfigbottomskip}}
+\newcounter{mytempeqncnt}
+
+\begin{document}
+
+% paper title
+\title{Projeto I: Caracteriza\c{c}\~{a}o de canais banda estreita}
+
+
+\author{Meu Nome Vai Aqui
+    \thanks{Este trabalho foi como parte do curso de Comunicações Móveis oferecido pelo Departamento de Engenharia de Comunicações da UFRN.}
+}
+
+% The paper headers
+\markboth{Nome do Evento}{Nome do Evento}
+
+% make the title area
+\maketitle
+
+\begin{abstract}
+Esse trabalho realiza a decomposição dos efeitos de perda de potência em um sinal em relação à distância entre o transmissor e o receptor. Os dados analisados foram gerados sinteticamente e, portanto, a abordagem descrita é de engenharia reversa. Tenta-se, então, encontrar os parâmetros de descrição do canal ao separar os diferentes efeitos de perda sobre o sinal.
+\end{abstract}
+
+\begin{keywords}
+Caracterização de canal, aderência estatística, desvanecimento, sombreamento.
+\end{keywords}
+
+%\IEEEpeerreviewmaketitle
+
+\section{Introdução}
+Caracterização de canais de comunicação é uma tarefa extremamente importante para tornar possível simulações e prototipagem. Embora haja momentos em que simulações e protótipos se encontrem, essa possível reproducibilidade faz com que se possa analisar e depurar problemas, reduzindo os custos relacionados a suas correções e respectivos testes. 
+
+Contudo, uma onda eletromagnética propagando-se está sob efeito de diversos fenômenos físicos. Sendo assim, além de analisar as perdas de potência como um todo, deve-se analisar e conhecer-se os diferentes efeitos que estão influenciando nesse comportamento.
+
+\subsection{Proposta do Trabalho}
+Observando-se um sinal inventado, aplicar-se-á uma regressão linear em conjunto com um filtro passa-baixa para separar os diferentes componentes do sinal. Isolando-os devidamente e para melhor caracterização, utilizar-se-á um teste de aderência estatística para modelar as perdas que aparentam comportamento não-determinístico.
+
+\subsection{Metodologia}
+
+Nos últimos anos,...
+
+\subsubsection{Análise numérica}
+Todas as análise forma feitas utilizando o seguinte código:
+\inputminted[linenos=true]{python}{code/example.py}
+
+Nos últimos anos,...
+
+\subsubsection{Simulação}
+
+Nos últimos anos,...
+
+\subsubsection{Rede Real}
+
+Nos últimos anos,...
+
+\section{Conclusões}
+Nos últimos anos...
+
+Nos muitos últimos anos...
+
+Vou enrolar até conseguir duas colunas...
+
+Para isso, preciso ficar adicionando essas linhas todas...
+
+Até conseguir meu objetivo para que esse projeto sirva de exemplo...
+
+E que seja possível apenas copiá-lo para fazermos nossas cópias...
+
+Finalmente, algum conteúdo foi parar na segunda coluna...
+
+\section*{Agradecimentos}
+We would like to thank Prof. Luiz Gonzaga for participating in several useful discussions that helped to improve this work.
+
+\bibliographystyle{IEEEtran}
+\bibliography{some_books,some_papers}
+
+\end{document}
