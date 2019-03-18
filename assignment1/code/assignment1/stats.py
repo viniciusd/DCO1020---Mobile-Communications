@@ -17,18 +17,8 @@ def distribution_fit(data):
     results = []
     with Pool(initializer=_warning_disabler) as p:
         results.extend(p.map(functools.partial(_distribution_fit, data), distributions))
-        # results.extend(p.map(DistributionFitter(data), distributions))
-    print(f"Could not proccess {results.count(None)} distributions")
     return tuple(sorted((result for result in results if result is not None),
                         key=lambda dist: dist.fit))
-
-
-class DistributionFitter:
-    def __init__(self, data):
-        self.data = data
-
-    def __call__(self, distribution):
-        return _distribution_fit(self.data, distribution)
 
 def _warning_disabler():
     warnings.simplefilter("ignore")
@@ -49,7 +39,5 @@ def _distribution_fit(data, distribution):
                     best_fit = fit
                     args = (arg,)
             fit = best_fit
-        else:
-            print(distribution, missing_arguments)
 
     return DistributionFit(distribution, args, fit) if fit else None
