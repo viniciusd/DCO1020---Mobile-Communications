@@ -153,10 +153,6 @@ if __name__ == '__main__':
 
     plt.savefig('trial1_shading.eps')
 
-    # distributions = ('anglit', 'arcsine', 'cauchy', 'cosine', 'expon', 'gilbrat', 'gumbel_r', 'gumbel_l', 'halfcauchy', 'halflogistic', 'halfnorm', 'hypsecant', 'kstwobign', 'laplace', 'levy', 'levy_l', 'logistic', 'maxwell', 'moyal', 'norm', 'rayleigh', 'semicircular', 'uniform', 'wald')
-    #min(distributions, key=lambda name: stats.kstest(_shading, name))
-    # cauchy vs anglit
-    # _distributions = sorted(distributions, key=lambda name: stats.kstest(shading, name))
     """plt.figure()
     x = np.linspace(-30,30,1000)
     param = stats.dgamma.fit(shading, 5)
