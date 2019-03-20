@@ -156,29 +156,114 @@ if __name__ == '__main__':
     """plt.figure()
     x = np.linspace(-30,30,1000)
     param = stats.dgamma.fit(shading, 5)
-    pdf_fitted = stats.dgamma.pdf(x, param[0], loc=param[1], scale=param[2])
+    pdf_fitted = stats.dgamma.pdf(x, param[0], loc=param[-2], scale=param[-1])
     plt.hist(shading, normed=True, label='Histograma do sombreamento')
     plt.plot(x,pdf_fitted,'r-', label='Fit da distribuição gamma')
     param = stats.cauchy.fit(shading)
-    pdf_fitted = stats.cauchy.pdf(x, loc=param[0], scale=param[1])
+    pdf_fitted = stats.cauchy.pdf(x, loc=param[-2], scale=param[-1])
     plt.plot(x,pdf_fitted,'b-', label='Fit da distribuição de Cauchy')
     plt.legend()
-    plt.show()"""
+    plt.show()
+
+    breakpoint()
+    """
+    print('\nSombreamento')
     print(
             'Janela | Desvio padrão | Média | Erro Médio'
         )
-    for w in (10, 50, 100, 150, 200):
-        _large_scale_fading = movmean(prx, w)
+    windows = (10, 50, 100, 150, 200)
+    large_scale_fadings = [movmean(prx,w) for w in windows]
+    for i, _large_scale_fading in enumerate(large_scale_fadings):
+        w = windows[i]
 
         _shading = _large_scale_fading+pathloss
-        _small_scale_fading = prx - _large_scale_fading
-
-        _distributions = distribution_fit(_small_scale_fading)
-        print(_distributions[:2])
-
         print((
                f'{w:>6} | '
                f'{np.std(_shading):13.2f} | '
                f'{np.mean(_shading):5.2f} | '
                f'{error(expected_shading, _shading):10.2f}'
+        ))
+
+    print('\nAderência estatística')
+    print(
+           'Janela | '
+           'Primeira melhor distribuição | Média | Escala | Argumentos adicionais'
+        )
+    for i, _large_scale_fading in enumerate(large_scale_fadings):
+        w = windows[i]
+
+        _small_scale_fading = prx - _large_scale_fading
+
+        first_name, second_name = '', ''
+        if w == 10:
+            first_name, second_name = 'genlogistic', 'dgamma'
+            first_args, second_args = (1,), (2,)
+        elif w == 50:
+            first_name, second_name = 'dgamma', 'genlogistic'
+            first_args, second_args = (2,), (1,)
+        elif w == 100:
+            first_name, second_name = 'dgamma', 'genlogistic'
+            first_args, second_args = (2,), (1,)
+        elif w == 150:
+            first_name, second_name = 'dgamma', 'cauchy'
+            first_args, second_args = (2,), ()
+        elif w == 200:
+            first_name, second_name = 'dgamma', 'cauchy'
+            first_args, second_args = (3,), ()
+        else:
+            raise
+
+        first, second = getattr(stats, first_name), getattr(stats, second_name)
+        first_params = first.fit(_small_scale_fading, *first_args)
+        second_params = second.fit(_small_scale_fading, *second_args)
+
+        #_distributions = distribution_fit(_small_scale_fading)
+
+        print((
+               f'{w:>6} | '
+               f'{first_name:>28} | '
+               f'{first_params[-2]:5.2f} | '
+               f'{first_params[-1]:6.2f} | '
+               f'{first_params[:-2]}'
+        ))
+    print(
+           'Janela | '
+           'Segunda melhor distribuição | Média | Escala | Argumentos adicionais'
+        )
+    for i, _large_scale_fading in enumerate(large_scale_fadings):
+        w = windows[i]
+
+        _small_scale_fading = prx - _large_scale_fading
+
+        first_name, second_name = '', ''
+        if w == 10:
+            first_name, second_name = 'genlogistic', 'dgamma'
+            first_args, second_args = (1,), (2,)
+        elif w == 50:
+            first_name, second_name = 'dgamma', 'genlogistic'
+            first_args, second_args = (2,), (1,)
+        elif w == 100:
+            first_name, second_name = 'dgamma', 'genlogistic'
+            first_args, second_args = (2,), (1,)
+        elif w == 150:
+            first_name, second_name = 'dgamma', 'cauchy'
+            first_args, second_args = (2,), ()
+        elif w == 200:
+            first_name, second_name = 'dgamma', 'cauchy'
+            first_args, second_args = (3,), ()
+        else:
+            raise
+
+        first, second = getattr(stats, first_name), getattr(stats, second_name)
+        first_params = first.fit(_small_scale_fading, *first_args)
+        second_params = second.fit(_small_scale_fading, *second_args)
+
+        #_distributions = distribution_fit(_small_scale_fading)
+
+        print((
+               f'{w:>6} | '
+               f'{second_name:>27} | '
+               f'{second_params[-2]:5.2f} | '
+               f'{second_params[-1]:6.2f} | '
+               f'{second_params[:-2]}'
         ))
