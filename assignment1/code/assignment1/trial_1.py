@@ -99,7 +99,7 @@ if __name__ == '__main__':
     plt.plot(distance, -expected_pathloss, 'r--',
              label='Perda de percurso')
 
-    plt.xlabel('Distance (m)')
+    plt.xlabel('Distância (m)')
     plt.ylabel('Potência (dB)')
     plt.xlim(min(distance), max(distance))
     plt.legend()
@@ -116,7 +116,7 @@ if __name__ == '__main__':
     plt.plot(distance, -pathloss, 'r--',
              label='Perda de percurso')
   
-    plt.xlabel('Distance (m)')
+    plt.xlabel('Distância (m)')
     plt.ylabel('Potência (dB)')
     plt.xlim(min(distance), max(distance))
     plt.legend()
@@ -131,7 +131,7 @@ if __name__ == '__main__':
     plt.plot(distance, pathloss, 'r--',
              label='Perda de percurso estimada')
   
-    plt.xlabel('Distance (m)')
+    plt.xlabel('Distância (m)')
     plt.ylabel('Potência (dB)')
     plt.xlim(min(distance), max(distance))
     plt.legend()
@@ -146,7 +146,7 @@ if __name__ == '__main__':
     plt.plot(distance, shading, 'r--',
              label='Sombreamento estimado')
  
-    plt.xlabel('Distance (m)')
+    plt.xlabel('Distância (m)')
     plt.ylabel('Potência (dB)')
     plt.xlim(min(distance), max(distance))
     plt.legend()
