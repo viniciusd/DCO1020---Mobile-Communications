@@ -43,7 +43,7 @@ def movmean(signal, w=3, iterations_left=None, direction=0):
                          ))
 
 def error(x, y):
-    return (np.linalg.norm(x-y)/np.linalg.norm(x))**2
+    return np.linalg.norm(x-y)/np.linalg.norm(x)
 
 def move_mean_to_0(signal, x):
     return signal-np.mean(signal)+np.mean(signal)*np.sin(2*np.pi*x)
