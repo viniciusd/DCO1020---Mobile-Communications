@@ -169,9 +169,10 @@ if __name__ == '__main__':
         )
     for w in (10, 50, 100, 150, 200):
         _large_scale_fading = movmean(prx, w)
+
         _shading = _large_scale_fading+pathloss
-        #_distributions = sorted(distributions, key=lambda name: stats.kstest(_shading, name))
         _small_scale_fading = prx - _large_scale_fading
+
         _distributions = distribution_fit(_small_scale_fading)
         print(_distributions[:2])
 
