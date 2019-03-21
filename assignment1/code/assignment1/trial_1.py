@@ -240,37 +240,17 @@ if __name__ == '__main__':
 
             _small_scale_fading = prx - _large_scale_fading
 
-            first_name, second_name = '', ''
-            if w == 10:
-                first_name, second_name = 'genlogistic', 'dgamma'
-                first_args, second_args = (1,), (2,)
-            elif w == 50:
-                first_name, second_name = 'dgamma', 'genlogistic'
-                first_args, second_args = (2,), (1,)
-            elif w == 100:
-                first_name, second_name = 'dgamma', 'genlogistic'
-                first_args, second_args = (2,), (1,)
-            elif w == 150:
-                first_name, second_name = 'dgamma', 'cauchy'
-                first_args, second_args = (2,), ()
-            elif w == 200:
-                first_name, second_name = 'dgamma', 'cauchy'
-                first_args, second_args = (3,), ()
-            else:
-                _distributions = distribution_fit(_small_scale_fading)
-                first_name, second_name = _distributions[0].name, _distributions[1].name
-                first_args, second_args = _distributions[0].args, _distributions[1].args
+            _distribution = distribution_fit(_small_scale_fading)[0]
 
-            first, second = getattr(stats, first_name), getattr(stats, second_name)
-            first_params = first.fit(_small_scale_fading, *first_args)
-            second_params = second.fit(_small_scale_fading, *second_args)
+            distribution = getattr(stats, _distribution.name)
+            params = distribution.fit(_small_scale_fading, *_distribution.args)
 
             print((
                    f'{w:>6} | '
-                   f'{first_name:>28} | '
-                   f'{first_params[-2]:5.2f} | '
-                   f'{first_params[-1]:6.2f} | '
-                   f'{first_params[:-2]}'
+                   f'{_distribution.name:>28} | '
+                   f'{params[-2]:5.2f} | '
+                   f'{params[-1]:6.2f} | '
+                   f'{params[:-2]}'
             ))
         print(
                'Janela | '
@@ -281,35 +261,15 @@ if __name__ == '__main__':
 
             _small_scale_fading = prx - _large_scale_fading
 
-            first_name, second_name = '', ''
-            if w == 10:
-                first_name, second_name = 'genlogistic', 'dgamma'
-                first_args, second_args = (1,), (2,)
-            elif w == 50:
-                first_name, second_name = 'dgamma', 'genlogistic'
-                first_args, second_args = (2,), (1,)
-            elif w == 100:
-                first_name, second_name = 'dgamma', 'genlogistic'
-                first_args, second_args = (2,), (1,)
-            elif w == 150:
-                first_name, second_name = 'dgamma', 'cauchy'
-                first_args, second_args = (2,), ()
-            elif w == 200:
-                first_name, second_name = 'dgamma', 'cauchy'
-                first_args, second_args = (3,), ()
-            else:
-                _distributions = distribution_fit(_small_scale_fading)
-                first_name, second_name = _distributions[0].name, _distributions[1].name
-                first_args, second_args = _distributions[0].args, _distributions[1].args
+            _distribution = distribution_fit(_small_scale_fading)[1]
 
-            first, second = getattr(stats, first_name), getattr(stats, second_name)
-            first_params = first.fit(_small_scale_fading, *first_args)
-            second_params = second.fit(_small_scale_fading, *second_args)
+            distribution = getattr(stats, _distribution.name)
+            params = distribution.fit(_small_scale_fading, *_distribution.args)
 
             print((
                    f'{w:>6} | '
-                   f'{second_name:>27} | '
-                   f'{second_params[-2]:5.2f} | '
-                   f'{second_params[-1]:6.2f} | '
-                   f'{second_params[:-2]}'
+                   f'{_distribution.name:>27} | '
+                   f'{params[-2]:5.2f} | '
+                   f'{params[-1]:6.2f} | '
+                   f'{params[:-2]}'
             ))
