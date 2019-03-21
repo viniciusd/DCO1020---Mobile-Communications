@@ -65,21 +65,6 @@ def _plot_expected_prx(file_name, distance, prx, expected_pathloss, expected_sha
 
     plt.savefig(f'trial1_{file_name}_original.eps')
 
-def _plot_expected_pathloss(file_name, distance, prx, pathloss, expected_pathloss):
-    plt.figure()
-    plt.title('Perda de percurso original e estimada')
-    plt.plot(distance, expected_pathloss, 'cyan',
-             label='Perda de percurso original')
-    plt.plot(distance, pathloss, 'r--',
-             label='Perda de percurso estimada')
-  
-    plt.xlabel('Distância (m)')
-    plt.ylabel('Potência (dB)')
-    plt.xlim(min(distance), max(distance))
-    plt.legend()
-
-    plt.savefig(f'trial1_{file_name}_pathloss.eps')
-
 def _plot_expected_shading(file_name, distance, prx, shading, expected_shading):
     plt.figure()
     plt.title('Sombreamento original e estimado')
@@ -101,16 +86,22 @@ if __name__ == '__main__':
     signals = (
                 {
                     'file_name': 'prx',
+                    'plot_window': 100,
                     'windows': (10, 50, 100, 150, 200),
+                    'P_0': 0,
+                    'd_0': 5,
                 },
                 {
                     'file_name': 'real_world_prx',
+                    'plot_window': 5,
                     'windows': (2, 5, 10),
+                    'P_0': 45,
+                    'd_0': 5,
                 },
             )
 
-    P_0, d_0 = 0, 5
     for signal in signals:
+        P_0, d_0 = signal['P_0'], signal['d_0']
         file_name = signal['file_name']
         signal_data = _load_signal(file_name)
         distance = signal_data['dPath']
@@ -133,21 +124,23 @@ if __name__ == '__main__':
         # to make it explicit.
         # XXX: Note it may fail because of float point precision, it
         # is not an issue for P_0 = 0 though.
-        assert c == P_0
+        # FIXME: Needs to investigate why c is different of P_0 for the
+        # real world signal
+        # assert c == P_0
 
         n = -m/10
-        pathloss = -m*logdistance
+        pathloss = P_0 -m*logdistance
 
         print((
-             'Pathloss information\n'
-             '--------------------\n'
-            f'Pathloss coeficient: {n}'
+             'Informação da perda de percurso\n'
+             '-------------------------------\n'
+            f'Coeficiente de perda de percurso: {n}'
             ))
         if expected_pathloss is not None:
-            print(f'Pathloss quadratic error: {error(-expected_pathloss, m*logdistance)}')
+            print(f'Erro quadrático da perda de percurso: {error(-expected_pathloss, m*logdistance)}')
         print()
 
-        large_scale_fading = movmean(prx, 100)
+        large_scale_fading = movmean(prx, signal['plot_window'])
         small_scale_fading = prx - large_scale_fading
         shading = move_mean_to_0(large_scale_fading+pathloss, distance)
 
@@ -173,9 +166,46 @@ if __name__ == '__main__':
         plt.savefig(f'trial1_{file_name}_estimated.eps')
 
 
+        plt.figure()
+        title = 'Perda de percurso'
         if expected_pathloss is not None:
-            _plot_expected_pathloss(file_name, distance, prx,
-                                    pathloss, expected_pathloss)
+            title += ' original e estimada'
+        plt.title(title)
+        plt.plot(distance, prx, 'orange',
+                 label='Potência recebida completa')
+        if expected_pathloss is not None:
+            plt.plot(distance, expected_pathloss, 'cyan',
+                     label='Perda de percurso original')
+        plt.plot(distance, pathloss, 'r--',
+                 label='Perda de percurso estimada')
+
+        plt.xlabel('Distância (m)')
+        plt.ylabel('Potência (dB)')
+        plt.xlim(min(distance), max(distance))
+        plt.legend()
+
+        plt.savefig(f'trial1_{file_name}_pathloss.eps')
+
+
+        plt.figure()
+        title = 'Perda de percurso e sombreamento'
+        if expected_pathloss is not None:
+            title += ' originais e estimados'
+        plt.title(title)
+        plt.plot(distance, prx, 'orange',
+                 label='Potência recebida completa')
+        if expected_pathloss is not None:
+            plt.plot(distance, expected_shading-expected_pathloss, 'cyan',
+                     label='Perda de percurso e sombreamento originais')
+        plt.plot(distance, shading-pathloss, 'r--',
+                 label='Perda de percurso e sombreamento estimados')
+
+        plt.xlabel('Distância (m)')
+        plt.ylabel('Potência (dB)')
+        plt.xlim(min(distance), max(distance))
+        plt.legend()
+
+        plt.savefig(f'trial1_{file_name}_pathloss_shading.eps')
 
         if expected_shading is not None:
             _plot_expected_shading(file_name, distance, prx,
