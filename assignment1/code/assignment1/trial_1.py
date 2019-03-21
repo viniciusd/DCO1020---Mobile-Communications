@@ -210,20 +210,6 @@ if __name__ == '__main__':
         if expected_shading is not None:
             _plot_expected_shading(file_name, distance, prx,
                                    shading, expected_shading)
-        """plt.figure()
-        x = np.linspace(-30,30,1000)
-        param = stats.dgamma.fit(shading, 5)
-        pdf_fitted = stats.dgamma.pdf(x, param[0], loc=param[-2], scale=param[-1])
-        plt.hist(shading, normed=True, label='Histograma do sombreamento')
-        plt.plot(x,pdf_fitted,'r-', label='Fit da distribuição gamma')
-        param = stats.cauchy.fit(shading)
-        pdf_fitted = stats.cauchy.pdf(x, loc=param[-2], scale=param[-1])
-        plt.plot(x,pdf_fitted,'b-', label='Fit da distribuição de Cauchy')
-        plt.legend()
-        plt.show()
-
-        breakpoint()
-        """
         print('\nSombreamento')
         print(
                 'Janela | Desvio padrão |  Média | Erro Médio'
