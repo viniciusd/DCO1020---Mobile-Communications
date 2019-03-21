@@ -176,7 +176,7 @@ if __name__ == '__main__':
         if expected_pathloss is not None:
             plt.plot(distance, expected_pathloss, 'cyan',
                      label='Perda de percurso original')
-        plt.plot(distance, pathloss, 'r--',
+        plt.plot(distance, -pathloss, 'r--',
                  label='Perda de percurso estimada')
 
         plt.xlabel('Distância (m)')
