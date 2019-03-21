@@ -6,6 +6,7 @@ import os
 import re
 import warnings
 
+import numpy as np
 from scipy import stats
 
 
@@ -15,7 +16,25 @@ DistributionFit = namedtuple('DistributionFit', ['name', 'args', 'fit'])
 
 _distributions = ('alpha', 'anglit', 'arcsine', 'argus', 'beta', 'betaprime', 'bradford', 'burr', 'burr12', 'cauchy', 'chi', 'chi2', 'cosine', 'crystalball', 'dgamma', 'dweibull', 'erlang', 'expon', 'exponnorm', 'exponweib', 'exponpow', 'f', 'fatiguelife', 'fisk', 'foldcauchy', 'foldnorm', 'frechet_r', 'frechet_l', 'genlogistic', 'gennorm', 'genpareto', 'genexpon', 'genextreme', 'gausshyper', 'gamma', 'gengamma', 'genhalflogistic', 'gilbrat', 'gompertz', 'gumbel_r', 'gumbel_l', 'halfcauchy', 'halflogistic', 'halfnorm', 'halfgennorm', 'hypsecant', 'invgamma', 'invgauss', 'invweibull', 'johnsonsb', 'johnsonsu', 'kappa4', 'kappa3', 'ksone', 'kstwobign', 'laplace', 'levy', 'levy_l', 'levy_stable', 'logistic', 'loggamma', 'loglaplace', 'lognorm', 'lomax', 'maxwell', 'mielke', 'moyal', 'nakagami', 'ncx2', 'ncf', 'nct', 'norm', 'norminvgauss', 'pareto', 'pearson3', 'powerlaw', 'powerlognorm', 'powernorm', 'rdist', 'reciprocal', 'rayleigh', 'rice', 'recipinvgauss', 'semicircular', 'skewnorm', 't', 'trapz', 'triang', 'truncexpon', 'truncnorm', 'tukeylambda', 'uniform', 'vonmises', 'vonmises_line', 'wald', 'weibull_min', 'weibull_max', 'wrapcauchy')
 
-@functools.lru_cache(maxsize=16)
+def np_cache(**kwargs):
+    def decorator(function):
+        @functools.lru_cache(**kwargs)
+        def cached_wrapper(hashable_array):
+            array = np.array(hashable_array)
+            return function(array)
+
+        @functools.wraps(function)
+        def wrapper(array):
+            return cached_wrapper(tuple(array))
+
+        # copy lru_cache attributes over too
+        wrapper.cache_info = cached_wrapper.cache_info
+        wrapper.cache_clear = cached_wrapper.cache_clear
+
+        return wrapper
+    return decorator
+#@functools.lru_cache(maxsize=16)
+@np_cache(maxsize=16)
 def distribution_fit(data):
     results = []
     with Pool(processes=int(0.75*os.cpu_count()),
@@ -41,7 +60,7 @@ def _distribution_fit(data, distribution):
                 fit = stats.kstest(data, distribution, args=arg)
                 if not best_fit or fit < best_fit:
                     best_fit = fit
-                    args = (arg,)
+                    args = arg
             fit = best_fit
 
     return DistributionFit(distribution, args, fit) if fit else None
