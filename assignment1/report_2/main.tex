@@ -91,7 +91,7 @@ Esse modelo submete duas fontes de ruído gaussianas a filtros de Doppler e, uni
 
 Sua implementação foi feita baseada no código descrito no livro, embora com ligeiras adaptações tanto por causa da linguagem escolhida para seu desenvolvimento quanto para reduzir sue consumo de memória.
 
-A partir do código feito, simulou-se o efeito sobre o canal para três diferentes velocidades relativas: 3km/h, 60km/h e 120km/h, conforme visualizado em \ref{gans-3km-h} e \ref{fig:gans-60km-h}.
+A partir do código feito, simulou-se o efeito sobre o canal para três diferentes velocidades relativas: 3km/h, 60km/h e 120km/h, conforme visualizado em \ref{gans-3km-h}, \ref{fig:gans-60km-h} e \ref{fig:gans-120km-h}.
 
 Para determinar a frequência de amostragem, uma vez que temos um sinal em banda passante, utilizou-se a inequação exposta em \ref{eq:fs-ineq}. Essa inequação foi exposta em \cite{bandpass}, aonde $f_{U}$ representa a frequência mais alta do sinal e $f_{L}$ sua frequência mais baixa. Para tais frequências, utilizou-se o desvio de frequência de Doppler em relação à frequência central do sinal dado, 1900MHz.
 \begin{equation}
@@ -107,15 +107,21 @@ Determinar o valor de $n$ mostrou-se então um desafio, uma vez que torna necess
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[scale=0.55]{gans_3kmh.eps}
+    \includegraphics[scale=0.55]{gans_003kmh.eps}
     \caption{Canal simulado com o modelo de Clarke/Gans com uma velocidade relativa de 3km/h}
     \label{fig:gans-3km-h}
 \end{figure}
 \begin{figure}[h!]
     \centering
-    \includegraphics[scale=0.55]{gans_60kmh.eps}
+    \includegraphics[scale=0.55]{gans_060kmh.eps}
     \caption{Canal simulado com o modelo de Clarke/Gans com uma velocidade relativa de 60km/h}
     \label{fig:gans-60km-h}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.55]{gans_120kmh.eps}
+    \caption{Canal simulado com o modelo de Clarke/Gans com uma velocidade relativa de 120km/h}
+    \label{fig:gans-120km-h}
 \end{figure}
 \subsection{Modelo de Jakes}
 Esse modelo foi proposto em \cite{jakes}. \cite{mimo} mostra que o modelo de Jakes, diferente do modelo de Clarke/Gans, parte da geração de múltiplas senóides complexas. Esse modelo foi inicialmente proposto com o foco em simulações em hardware, por passar a depender da geração de senóides (comumente tabeladas em hardware) ao invés da geração de números aleatórios a partir de uma variável aleatória específica.
@@ -124,7 +130,7 @@ Esse modelo foi proposto em \cite{jakes}. \cite{mimo} mostra que o modelo de Jak
 
 Nas simulações que utilizaram o modelo de Clarke/Gans, percebe-se que, conforme é-se dito, em \cite{gans}, "a densidade de probabilidade da amplitude é Rayleigh enquanto a fase é uniformemnte distribuída", comportamentos claramente observáveis nos gráficos.
 
-Para 60km/h, pudemos observar atenuações maiores causadas pelo canal comparando com o caso da velocidade relativa de 3km/h. Isso pode indicar  uma seletividade no tempo.
+Para velocidades maiores, pudemos observar atenuações maiores causadas pelo canal comparando às velocidade relativa inferiores. Isso pode indicar  uma seletividade no tempo.
 
 Durante o desenvolvimento desse trabalho, observou-se uma complexidade maior do que a primeira parte do trabalho. Nessa segunda etapa, foi-se necessária maior maturidade matemática e científica, dado que foi necessário analisar com maior atenção a respectiva referência. Além disso, o poder computacional disponível nos momentos reservados para a execução desse projeto não foram capazes de rodar as simulações em tempo hábil. Dessa forma, tem-se apenas os gráficos apresentados porque os demais não finalizaram seus respectivos cálculos.
 
