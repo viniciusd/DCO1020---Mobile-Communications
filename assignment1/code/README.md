@@ -1,6 +1,10 @@
-# Projeto I: Caracterização de canais banda estreita
+# Projeto I: Caracterização e simulação de canais
 
-Esse trabalho realiza a decomposição dos efeitos de perda de potência em um sinal em relação à distância entre o transmissor e o receptor. Os dados analisados foram gerados sinteticamente e, portanto, a abordagem descrita é de engenharia reversa. Tenta-se, então, encontrar os parâmetros de descrição do canal ao separar os diferentes efeitos de perda sobre o sinal.
+Esse projeto divide-se em duas partes, aonde a primeira consiste da caracterização do canal através do qual sinais dados são transmitidos e a segunda consiste da simulação do canal móvel utilizando modelos clássicos.
+
+A caracterização se dá pela decomposição dos efeitos de perda de potência em um sinal em relação à distância entre o transmissor e o receptor. Os dados analisados foram gerados sinteticamente e, portanto, a abordagem descrita é de engenharia reversa. Tenta-se, então, encontrar os parâmetros de descrição do canal ao separar os diferentes efeitos de perda sobre o sinal. A partir de então, utilizam-se os aprendizados adquiridos para analisar um sinal real fornecido.
+
+A simulação, outra etapa crucial dos estudos de comunicações móveis, se dá pelo uso de dois modelos clássicos: Clarke/Gans e Jakes. Ambos com suas respectivas características e detalhes.
 
 # Instalação
 
@@ -34,8 +38,13 @@ E, para finalizar a configuração, instale as dependências.
 poetry install
 ```
 
-Com o ambiente devidamente configurado, basta chamar o script principal. Ele deverá gerar todos os gráficos e tabelas de ambos os sinais fornecidos.
+Com o ambiente devidamente configurado, basta chamar o respectivo script. Ele deverá gerar todos os gráficos e tabelas (se houver) correspondentes.
 
 ```shell
 python assignment1/trial_1.py
 ```
+Ou:
+```shell
+python assignment1/trial_2.py
+```
+Aonde `assignment1/trial_1.py` representa a primeira parte do projeto e `assignment1/trial_2.py` representa a segunda parte.
