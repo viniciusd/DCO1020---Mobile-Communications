@@ -108,3 +108,83 @@ if __name__ == '__main__':
 
         plt.tight_layout()
         plt.savefig(f'gans_{v}.eps')
+
+
+def transpose(arr):
+    return arr[:, np.newaxis]
+
+def Jakes_Flat(fd,Ts,Ns,t0=0,E0=1,phi_N=0):
+    N0 = 8
+    N = 4*N0+2
+    wd = 2*np.pi*fd
+
+    t = t0 + np.arange(Ns)*Ts
+    tf = t[-1]+Ts
+    coswt = np.hstack(( transpose(math.sqrt(2)*np.cos(wd*t)),
+                        transpose(2*np.cos(wd*np.cos(2*np.pi/N*np.arange(1, N0+1))*t))
+                      ))
+    h = E0/math.sqrt(2*N0+1)*np.exp(1j*np.hstack((phi_N, pi/(N0+1)*np.arange(1, N0+1))))*coswt
+
+    return h
+
+def plot_jakes():
+    # FIXME: Finish converting this code to Python. In regards to the syntax,
+    # it is all okay. However, it should still have some NameErrors because of
+    # function calls and logic errors because of Matlab's 1-based indexing
+    fd = 926
+    Ts = 1e-6
+    M = 2**12
+    t = np.arange(M)*Ts;
+    f = np.arange(-M/2, M/2)/(M*Ts*fd)
+    Ns = 50000
+    t_state = 0
+
+    h = Jakes_Flat(fd,Ts,Ns,t_state,1,0)
+
+    plt.subplot(311)
+    plt.plot(np.arange(1, Ns+1)*Ts, 10*np.log10(np.abs(h)))
+    plt.xlim(0, Ns*Ts)
+    plt.ylim(-20, 10)
+    plt.title(f'Channel Modeled by Jakes, f_d={fd}Hz, T_s={Ts}s')
+    plt.xlabel('Tempo[s]')
+    plt.ylabel('Magnitude[dB]')
+
+    plt.subplot(323)
+    plt.hist(np.abs(h), bins=50, density=True);
+    plt.title(f'Channel Modeled by Jakes, f_d={fd}Hz, T_s={Ts}s')
+    plt.xlabel('Magnitude')
+    plt.ylabel('Ocorrências')
+
+    plt.subplot(324)
+    plt.hist(np.angle(h), bins=50, density=True)
+    plt.title(f'Channel Modeled by Jakes, f_d={fd}Hz, T_s={Ts}s')
+    plt.xlabel('Fase[rad]')
+    plt.ylabel('Ocorrências')
+
+    temp=np.zeros((2,Ns))
+    for i in range(Ns):
+       j = np.arange(i, Ns)
+       temp1[:,j-i] = temp[:,j-i+1]+np.hstack((h(i).T*h(j), np.ones(1,Ns-i+1)))
+
+    k=np.arange(M)
+    Simulated_corr[k] = real(temp(1,k))/temp(2,k)
+    Classical_corr = besselj(0,2*pi*fd*t)
+
+    Classical_Y = fftshift(fft(Classical_corr))
+    Simulated_Y = fftshift(fft(Simulated_corr))
+
+    plt.subplot(325)
+    plt.plot(t,np.abs(Classical_corr),'b:', t, np.abs(Simulated_corr), 'r:')
+    plt.title(f'Autocorrelation of Channel, f_d={fd}Hz')
+    plt.xlabel(r'Atraso \tau [s]')
+    plt.ylabel('Correlação')
+    legend('Clássico','Simulado')
+
+    plt.subplot(326)
+    plt.plot(f,abs(Classical_Y),'b:', f,abs(Simulated_Y),'r:')
+    plt.title(f'Doppler Spectrum,f_d={fd}Hz')
+    plt.xlim(-1, 1)
+    plt.ylim(0, 600)
+    plt.xlabel('f/f_d')
+    plt.ylabel('Magnitude')
+    plt.legend('Classical','Simulated')
