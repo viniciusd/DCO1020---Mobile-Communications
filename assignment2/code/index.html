@@ -60,7 +60,7 @@
                 const ctx = canvas.getContext("2d");
                 ctx.translate(radius, radius);
 
-                const filledAngle = Math.PI/5;
+                const filledAngle = (1-(tput-1e-5)/document.getElementById("to").innerHTML) * Math.PI;
                 drawArc(ctx, radius, Math.PI, -filledAngle);
                 drawArc(ctx, radius, -filledAngle, 0, '#00FF00');
 
@@ -92,7 +92,7 @@
                 ctx.fillStyle = fillStyle;
 
                 ctx.beginPath();
-                ctx.arc(0, 0, innerRadius, Math.PI, 0);
+                ctx.arc(0, 0, innerRadius, 0, 2*Math.PI);
                 ctx.lineTo(0,0);
                 ctx.fill();
 
