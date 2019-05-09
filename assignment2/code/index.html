@@ -51,11 +51,15 @@
         </style>
         <script>
             function calculateThroughput() {
+                const mimoOption = document.querySelector('input[name="mimo"]:checked').value;
+                const rbs = document.getElementById('rbsRange');
+                const mcs = document.getElementById('mcsRange');
+
             }
 
             function drawThroughput(tput) {
                 const canvas = document.getElementById("throughput");
-                let radius = canvas.height = canvas.width/2;
+                const radius = canvas.height = canvas.width/2;
 
                 const ctx = canvas.getContext("2d");
                 ctx.translate(radius, radius);
@@ -79,7 +83,7 @@
 
                 const composite = ctx.globalCompositeOperation;
                 const fillStyle = ctx.fillStyle;
-                let innerRadius = 0.9*outerRadius;
+                const innerRadius = 0.9*outerRadius;
 
                 ctx.fillStyle = color;
                 ctx.beginPath();
@@ -99,9 +103,9 @@
                 ctx.globalCompositeOperation = composite;
              }
 
-            function getCssProperty(element, property) {
+             function getCssProperty(element, property) {
                 return window.getComputedStyle(element, null).getPropertyValue(property);
-            }
+             }
         </script>
     </head>
     <body>
@@ -133,7 +137,7 @@
             <label for="mimoChoice4">4x4 MIMO</label>
         </div>
         <script>
-            let ranges = [
+            const ranges = [
                     {
                         slider: "rbsRange",
                         output: "rbs",
@@ -144,8 +148,8 @@
                     },
                 ];
             for (range of ranges) {
-                let slider = document.getElementById(range.slider);
-                let output = document.getElementById(range.output);
+                const slider = document.getElementById(range.slider);
+                const output = document.getElementById(range.output);
 
                 output.innerHTML = slider.value; // Display the default slider value
 
@@ -155,7 +159,6 @@
                 } 
                 
             }
-            console.log(document.querySelector('input[name="mimo"]:checked').value);
         </script>
     </body>
 </html>
