@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <meta charset="UTF-8"> 
+        <script src="http://livejs.com/live.js"></script>
+        <style>
+            body {
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+            }
+
+            #throughput {
+                align-self: center;
+            }
+
+            #measures {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .slider {
+              -webkit-appearance: none;
+              width: 100%; /* Full-width */
+              height: 15px; /* Specified height */
+              border-radius: 5px;  
+              background: #d3d3d3;
+              outline: none; /* Remove outline */
+            }
+
+            .slider::-webkit-slider-thumb { /* Compatibility issues */
+              -webkit-appearance: none;
+              appearance: none;
+              width: 25px;
+              height: 25px;
+              border-radius: 50%; 
+              background: #4CAF50;
+              cursor: pointer;
+            }
+
+            .slider::-moz-range-thumb { /* Compatibility issues */
+              width: 25px;
+              height: 25px;
+              border-radius: 50%;
+              background: #4CAF50;
+              cursor: pointer;
+            }
+
+        </style>
+        <script>
+            function calculateThroughput() {
+            }
+
+            function drawThroughput(tput) {
+                let canvas = document.getElementById("throughput");
+                let ctx = canvas.getContext("2d");
+                ctx.translate(canvas.width/2, 0);
+                ctx.fillText(tput, 10, 50); 
+                //ctx.beginPath();
+                //ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+                //ctx.stroke(); 
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="throughput">1</canvas>
+        <div id="measures">
+            <span id="from">0</span>
+            <span id="unit">Mbps</span>
+            <span id="to">300</span>
+        </div>
+        <div class="slidecontainer">
+            <label for="rbsRange">Resource Blocks: <span id="rbs"></span></label>
+            <input type="range" min="1" max="100" value="50" class="slider" id="rbsRange">
+        </div>
+        <div class="slidecontainer">
+            <label for="mcsRange">MCS value: <span id="mcs"></span></label>
+            <input type="range" min="1" max="100" value="50" class="slider" id="mcsRange">
+        </div>
+        <div>
+            <input type="radio" id="mimoChoice0" checked="checked"
+                                name="mimo" value="mimo0">
+            <label for="mimoChoice0">MIMO disabled</label>
+
+            <input type="radio" id="mimoChoice2"
+                                name="mimo" value="mimo2">
+            <label for="mimoChoice2">2x2 MIMO</label>
+
+            <input type="radio" id="mimoChoice4"
+                                name="mimo" value="mimo4">
+            <label for="mimoChoice4">4x4 MIMO</label>
+        </div>
+        <script>
+            let ranges = [
+                    {
+                        slider: "rbsRange",
+                        output: "rbs",
+                    },
+                    {
+                        slider: "mcsRange",
+                        output: "mcs",
+                    },
+                ];
+            for (range of ranges) {
+                let slider = document.getElementById(range.slider);
+                let output = document.getElementById(range.output);
+
+                output.innerHTML = slider.value; // Display the default slider value
+
+                // Update the current slider value (each time you drag the slider handle)
+                slider.oninput = function() {
+                  output.innerHTML = this.value;
+                } 
+                
+            }
+            console.log(document.querySelector('input[name="mimo"]:checked').value);
+        </script>
+    </body>
+</html>
