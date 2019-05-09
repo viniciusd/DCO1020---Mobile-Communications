@@ -11,10 +11,12 @@
             }
 
             #throughput {
+                width: 100%;
                 align-self: center;
             }
 
             #measures {
+                width: 100%;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
@@ -52,13 +54,53 @@
             }
 
             function drawThroughput(tput) {
-                let canvas = document.getElementById("throughput");
-                let ctx = canvas.getContext("2d");
-                ctx.translate(canvas.width/2, 0);
-                ctx.fillText(tput, 10, 50); 
-                //ctx.beginPath();
-                //ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-                //ctx.stroke(); 
+                const canvas = document.getElementById("throughput");
+                let radius = canvas.height = canvas.width/2;
+
+                const ctx = canvas.getContext("2d");
+                ctx.translate(radius, radius);
+
+                const filledAngle = Math.PI/5;
+                drawArc(ctx, radius, Math.PI, -filledAngle);
+                drawArc(ctx, radius, -filledAngle, 0, '#00FF00');
+
+                ctx.globalCompositeOperation = "overlay";
+                const unit = document.getElementById("unit");
+                const fontSize = getCssProperty(unit, 'font-size');
+                const fontFamily = getCssProperty(unit, 'font-family');
+                ctx.font = `{fontSize} {fontFamily}`;
+                ctx.fillText(tput,  -ctx.measureText(tput).width/2, -ctx.measureText('M').width);
+            }
+
+            function drawArc(ctx, outerRadius, start, end, color) {
+                if (typeof color === 'undefined') {
+                    color = "#FF0000";
+                }
+
+                const composite = ctx.globalCompositeOperation;
+                const fillStyle = ctx.fillStyle;
+                let innerRadius = 0.9*outerRadius;
+
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(0, 0, outerRadius, start, end, true);
+                ctx.lineTo(0,0);
+
+                ctx.fill();
+
+                ctx.globalCompositeOperation = "destination-out";
+                ctx.fillStyle = fillStyle;
+
+                ctx.beginPath();
+                ctx.arc(0, 0, innerRadius, Math.PI, 0);
+                ctx.lineTo(0,0);
+                ctx.fill();
+
+                ctx.globalCompositeOperation = composite;
+             }
+
+            function getCssProperty(element, property) {
+                return window.getComputedStyle(element, null).getPropertyValue(property);
             }
         </script>
     </head>
