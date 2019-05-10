@@ -1,0 +1,193 @@
+\documentclass[journal,11pt,twocolumn]{IEEEtran}
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{makecell}
+\usepackage[normal]{subfigure}
+\usepackage{array,colortbl}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage[sort]{cite}
+\usepackage[none]{hyphenat}
+\usepackage{minted}
+\usepackage{url}
+\usepackage[section]{placeins}
+% Those packages were originally here, but I don't think we are gonna need them, so I commented them out
+%\usepackage[center,small]{caption}
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{comment}
+%\usepackage{float}
+%\usepackage{flushend}
+%\usepackage[mathfrak]{mathpi}
+%\usepackage{morefloats}
+%\usepackage{multicol}
+%\usepackage{multirow}
+%\usepackage{psfrag}
+%\usepackage{rangecite}
+%\usepackage{tabularx}
+%\usepackage{threeparttable}
+
+\setminted{breaklines=true}
+
+\sloppy
+\newcommand{\goodgap}{%
+\hspace{\subfigtopskip}%
+\hspace{\subfigbottomskip}}
+\newcounter{mytempeqncnt}
+
+\begin{document}
+
+% paper title
+\title{Calculadora LTE de downlink}
+
+
+\author{Vinícius Dantas de Lima Melo
+    \thanks{Este trabalho foi como parte do curso de Comunicações Móveis oferecido pelo Departamento de Engenharia de Comunicações da UFRN.}
+}
+
+% The paper headers
+\markboth{DCO1020 - Comunicações Móveis}{DCO1020 - Comunicações Móveis}
+
+% make the title areahttps://www.overleaf.com/project/5cd4d9c52ee633602b29ee85
+\maketitle
+
+\begin{abstract}
+
+Este trabalho apresenta uma calculadora para determinar a taxa de transmissão de downlink do LTE release 10 em diante. A calculadora suporta os principais parâmetros da camada PHY desse protocolo.
+
+\end{abstract}
+
+\begin{keywords}
+LTE, LTE Release 10, MIMO, camada PHY.
+\end{keywords}
+
+%\IEEEpeerreviewmaketitle
+
+\section{Introdução}
+
+A evolução das comunicações móveis proporcionado diferentes gerações de tecnologia com diversas melhorias ao usuário. A release 10 do LTE, adotada como tecnologia de quarta geração (4G) trouxe enormes melhoras em qualidade de serviço e taxa de transmissão. Essa geração ultrapassou suas antecessores.
+
+\subsection{Proposta do Trabalho}
+
+A calculadora aqui proposta apresenta parâmetros da camada PHY, os quais podem ser variados e, automaticamente, atualizar o valor final de taxa de transmissão do downlink.
+
+Os parâmetros escolhidos foram:
+\begin{itemize}
+    \item Banda disponível em um componente de portadora (CC): 1.4MHz, 3MHz, 5MHz, 10MHz, 15MHz e 20MHz;
+    \item Valor do MCS: de 0 a 28, dado que MCSs 29 a 31 são reservados;
+    \item Quantidade de componentes de banda agregados: 1 (sem agregação), 2, 3, 4 e 5;
+    \item Tamanho do prefixo cíclico: Normal ou extendido;
+    \item Esquema de MIMO: Sem MIMO, MIMO 2x2, MIMO 4x4 e MIMO 8x8.
+\end{itemize}
+
+\subsection{Metodologia}
+
+Analisando-se a norma \cite{lte} para a release 10, foi possível determinar o impacto de cada parâmetro citado.
+
+A tabela \ref{tab:tbs-idx} mostra a relação do índice MCS com a ordem de modulação e o respectivo índice TBS, ela também está presente em \cite{lte}, sendo a tabela 7.1.7.1-1.
+
+Com tais informações disponíveis, faz-se necessário determinar o respectivo bloco de recurso físico (PRB, sigla em inglês). Esses valores podem ser observados em \ref{tab:prb}.
+
+A tabela 7.1.7.2.1-1, presente na mesma norma, apresenta o tamanho do respectivo TBS, mostrando os possíveis 2.970 valores associados ao $I_{TBS}$ e ao $N_{PRB}$. Por questão do espaço requerido para tal tabela, ela está sendo omitida desse relatório.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{r|r|r}
+        \makecell[c]{\textbf{Índice MCS}\\ $I_{MCS}$} & \makecell[c]{Ordem de modulação\\$Q_{m}$} & \makecell[c]{Índice TBS\\$I_{TBS}$} \\
+        \hline
+        0 & 2 & 0\\
+        1 & 2 & 1\\
+        2 & 2 & 2\\
+        3 & 2 & 3\\
+        4 & 2 & 4\\
+        5 & 2 & 5\\
+        6 & 2 & 6\\        
+        7 & 2 & 7\\ 
+        8 & 2 & 8\\
+        9 & 2 & 9\\
+        10 & 4 & 9\\
+        11 & 4 & 10\\
+        12 & 4 & 11\\
+        13 & 4 & 12\\
+        14 & 4 & 13\\
+        15 & 4 & 14\\        
+        16 & 4 & 15\\ 
+        17 & 6 & 15\\ 
+        18 & 6 & 16\\
+        19 & 6 & 17\\
+        20 & 6 & 18\\        
+        21 & 6 & 19\\ 
+        22 & 6 & 20\\ 
+        23 & 6 & 21\\
+        24 & 6 & 22\\        
+        25 & 6 & 23\\ 
+        26 & 6 & 24\\ 
+        27 & 6 & 25\\ 
+        28 & 6 & 26
+        \end{tabular}
+    \caption{Relação entre o índice MCS, a ordem de modulação e o índice TBS}
+    \label{tab:tbs-idx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l|r|r|r|r|r|r|}
+        \hline
+        Largura de banda & 1.4MHz & 3MHz & 5MHz & 10MHz & 15MHz & 20MHz \\
+        \hline
+        \makecell[l]{Duração do\\subframe} & \multicolumn{6}{c|}{1ms} \\
+        \hline
+        \makecell[l]{Espaço entre \\subportadoras} & \multicolumn{6}{c|}{15KHz} \\
+        \hline
+        Tamanho da FFT & 128 & 256 & 512 & 1024 & 1536 & 2048\\
+        \hline
+        \makecell[l]{Número de\\subportadoras\\ocupadas} & 72 & 150 & 300 & 600 & 900 & 1200\\
+        \hline
+        \makecell[l]{Número de\\blocos de\\recurso} & 6 & 18 & 25 & 50 & 75 & 100\\
+        \hline
+        \makecell[l]{Número de\\símbolos OFDM\\por slot} & \multicolumn{6}{c|}{7 ou 6} \\
+        \hline
+        \end{tabular}
+    \caption{Características da camada física do LTE release 10 para diferentes bandas}
+    \label{tab:prb}
+\end{table}
+\subsubsection{Análise numérica}
+Com os parâmetros até então apresentados, podemos aplicar seus valores às equações seguintes. \\
+
+A equação \ref{eq:theoretic-dl} apresenta a taxa de transmissão teórica do downlink enquanto a equação \ref{eq:dl} apresenta a fórmula utilizada para calcular a taxa a partir das tabelas disponibilizadas. \\
+
+Nessas equações, Q representa o índide de modulação apresentado na tabela \ref{tab:tbs-idx}, enquanto $prefix$ representa o tamanho do prefixo cícilico, PRB é determinado pela banda e CC representa a quantidade de componentes de agregação utilizados. Por último, $tbs\_factor$ é um fator que depende do tamanho do prefixo cícilico, podendo ser $\frac{7}{7}$ ou $\frac{6}{7}$
+\begin{equation}
+   DL_{teorico} = ((12\cdot Q \cdot prefix \cdot mimo \cdot 2 \cdot PRB \cdot 0.75)\cdot\frac{CC}{1000})
+   \label{eq:theoretic-dl}
+\end{equation}
+\begin{equation}
+   DL = (mimo \cdot tbs\_factor\cdot TBS\cdot \frac{CC}{1000})
+   \label{eq:dl}
+   \end{equation}
+\section{Desenvolvimento}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.2]{calculadora}
+    \caption{Exemplo da calculadora para valores de entrada arbitrários}
+    \label{fig:trial1-estimated}
+\end{figure}
+\newpage
+\section{Conclusões}
+\vspace*{5cm}
+
+Esse trabalho foi bem desafiador, uma vez que colocou a turma em contato direto com uma norma técnica, que se mostrou extensa e com muita informação.
+
+Dessa forma, foi-se necessário ter a habilidade de procurar as informações necessárias para esse trabalho.
+
+Infelizmente não foi possível dedicar tempo suficiente para que o relatório pudesse estar no nível merecido para esse trabalho.
+
+Contudo, montar a calculadora foi uma atividade divertida e engrandecedora. Através da sua criação, pude aprender mais sobre alguns aspectos do desenvolvimento web que não são minha especialidade, como manipulacão do estilo de páginas através de CSS.
+
+Também foi desafiador montar o arco que se atualizasse de acordo com a taxa de downlink encontrada e a máxima taxa possível com a variação dos parâmetros.
+\bibliographystyle{IEEEtran}
+\bibliography{some_books,some_papers,some_urls}
+
+\end{document}
